@@ -14,6 +14,24 @@ with login:
         password = st.text_input("Password",type="password")
         btn=st.form_submit_button("Login")
 
+        if btn:
+            query = """
+            select * from users
+            where email= %s AND password = %s
+            """
+
+            values = (email, password)
+
+            cursor.execute(query, values)
+
+            users = cursor.fetchone()
+
+            if users:
+                st.success("Login Successful 🎉")
+                st.write(f"Welcome {users['name']}")
+            else:
+                st.error("Invalid Email or password")
+
 
 with signup:
     st.header("SignUp")
